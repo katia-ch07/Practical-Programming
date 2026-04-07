@@ -74,7 +74,21 @@ class App(tk.Tk):
             messagebox.showerror("Error", "Grade must be between 0 and 100")
             return
         
-        print(name, grade) 
+         # create student id (simple way) (Programiz, 2024)
+        student_id = "S" + str(len(self.db) + 1)
+
+        # store student data (dictionary structure)
+        self.db[student_id] = {
+            "name": name,
+            "grades": [grade]  # list so we can add more later
+        }
+
+        save_data(self.db)  # save to file
+
+        messagebox.showinfo("Success", "Student added")  # feedback
+
+        print(self.db)  # for debug
+
 
 
 #run program 
