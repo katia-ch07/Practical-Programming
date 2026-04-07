@@ -16,20 +16,49 @@ def load_data():
                 return json.load(file)
     return {}
 
+
+def save_data(data):
+    with open(DATA_FILE, "w") as file:
+        json.dump(data,file,indent=4)
+
+
 #this is main app class 
 class App(tk.Tk):
     def __init__(self):
         super().__init__() #start the tkinter window properly
-        
+
         #window  setting
         self.title("Student Progress Tracker")
         self.geometry("800x600")
 
-        #simple title label
-        title = tk.Label(self, text="Student Tracker", font=("Arial", 18)).pack(pady=20)
+        self.db = load_data()
+
+        #input section
+        frame= tk.Frame(self)
+        frame.pack(pady=20)
+
+        #name input
+        tk.Label(frame, text="Name:").grid(row=0, column=0)
+        self.name_entry = tk.Entry(frame)
+        self.name_entry.grid(row=0, column=1)
+
+        # grade input
+        tk.Label(frame, text="Grade:").grid(row=1, column=0)
+        self.grade_entry = tk.Entry(frame)
+        self.grade_entry.grid(row=1, column=1)
+
+        # add button
+        tk.Button(self, text="Add Student", command=self.add_student).pack(pady=10)
+
+    def add_student(self):
+        # get values from user (freeCodeCamp, 2022)
+        name = self.name_entry.get()
+        grade = self.grade_entry.get()
+
+        print(name, grade)  # temporary output for testing
+
 
 #run program 
 if __name__ == "__main__":
     app = App()
     app.mainloop()
-    
