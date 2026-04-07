@@ -2,6 +2,7 @@
 
 #first import libraries 
 import tkinter as tk  #GUI creation (python software foundation, 2024)
+from tkinter import messagebox  # for popups (Python Software Foundation, 2024)
 import json #JSON handling (Python Software Foundation, 2024)
 import os #file system (Programiz, 2024)
 
@@ -55,7 +56,25 @@ class App(tk.Tk):
         name = self.name_entry.get()
         grade = self.grade_entry.get()
 
-        print(name, grade)  # temporary output for testing
+        #check if name is empty (W3Schools, 2024)
+
+        if name == "":
+            messagebox.showerror("Error", "Name cannot be empty")
+            return
+
+        # check if grade is a number (GeeksforGeeks, 2024)
+        try:
+            grade = float(grade)
+        except:
+            messagebox.showerror("Error", "Grade must be a number")
+            return
+
+        # check grade range
+        if grade < 0 or grade > 100:
+            messagebox.showerror("Error", "Grade must be between 0 and 100")
+            return
+        
+        print(name, grade) 
 
 
 #run program 
