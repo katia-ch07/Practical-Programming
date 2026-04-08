@@ -23,6 +23,10 @@ def save_data(data):
         json.dump(data,file,indent=4)
 
 
+# function to calculate average (GeeksforGeeks, 2024)
+def calculate_average(grades):
+    return sum(grades) / len(grades)
+
 #this is main app class 
 class App(tk.Tk):
     def __init__(self):
@@ -85,7 +89,10 @@ class App(tk.Tk):
 
         save_data(self.db)  # save to file
 
-        messagebox.showinfo("Success", "Student added")  # feedback
+        # calculate average after adding
+        avg = calculate_average(self.db[student_id]["grades"])
+
+        messagebox.showinfo("Success", f"Student added (Avg: {avg:.1f})")  # feedback
 
         print(self.db)  # for debug
 
