@@ -1,8 +1,8 @@
-#student progress tracker 
+#student progress tracker  
 
 #first import libraries 
 import tkinter as tk  #GUI creation (python software foundation, 2024)
-from tkinter import messagebox  # for popups (Python Software Foundation, 2024)
+from tkinter import messagebox, ttk # (ttk for table) for popups (Python Software Foundation, 2024)
 import json #JSON handling (Python Software Foundation, 2024)
 import os #file system (Programiz, 2024)
 
@@ -55,8 +55,30 @@ class App(tk.Tk):
         # add button
         tk.Button(self, text="Add Student", command=self.add_student).pack(pady=10)
 
+        # table
+        self.tree = ttk.Treeview(self, columns=("ID", "Name", "Average"), show="headings")
+
+        self.tree.heading("ID", text="ID")
+        self.tree.heading("Name", text="Name")
+        self.tree.heading("Average", text="Average")
+
+        self.tree.pack(fill=tk.BOTH, expand=True)
+
+        self.refresh_table()
+
+    def refresh_table(self):
+        #clear table (Stack Overflow Community, 2023)
+        for row in self.tree.get_children():
+            self.tree.delete(row)
+
+        #insert data
+        for sid, info in self.db.items():
+            avg = calculate_average(info["grades"])
+            self.tree.insert("", "end", values=(sid, info["name"], f"{avg:.1f}"))
+
+
     def add_student(self):
-        # get values from user (freeCodeCamp, 2022)
+        #get values from user (freeCodeCamp, 2022)
         name = self.name_entry.get()
         grade = self.grade_entry.get()
 
@@ -87,15 +109,11 @@ class App(tk.Tk):
             "grades": [grade]  # list so we can add more later
         }
 
-        save_data(self.db)  # save to file
+        save_data(self.db)
 
-        # calculate average after adding
-        avg = calculate_average(self.db[student_id]["grades"])
+        self.refresh_table()  # update table
 
-        messagebox.showinfo("Success", f"Student added (Avg: {avg:.1f})")  # feedback
-
-        print(self.db)  # for debug
-
+        messagebox.showinfo("Success", "Student added")
 
 
 #run program 
