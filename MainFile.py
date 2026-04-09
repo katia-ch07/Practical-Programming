@@ -1,10 +1,14 @@
 #student progress tracker  
+# added charts for data visualisation (Matplotlib Development Team, 2024)
+
 
 #first import libraries 
 import tkinter as tk  #GUI creation (python software foundation, 2024)
 from tkinter import messagebox, ttk # (ttk for table) for popups (Python Software Foundation, 2024)
 import json #JSON handling (Python Software Foundation, 2024)
 import os #file system (Programiz, 2024)
+import matplotlib.pyplot as plt  # charts (Matplotlib Development Team, 2024)
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 DATA_FILE = "students.json"
 
@@ -68,6 +72,8 @@ class App(tk.Tk):
          # sort button
         tk.Button(self, text="Sort by Average", command=self.sort_students).pack(pady=5)
 
+        # chart button
+        tk.Button(self, text="Show Chart", command=self.show_chart).pack(pady=5)
 
         # table
         self.tree = ttk.Treeview(self, columns=("ID", "Name", "Average"), show="headings")
@@ -79,6 +85,22 @@ class App(tk.Tk):
         self.tree.pack(fill=tk.BOTH, expand=True)
 
         self.refresh_table()
+
+    def show_chart(self):
+        # create simple bar chart (W3Schools, 2024)
+        names = []
+        averages = []
+
+        for info in self.db.values():
+            names.append(info["name"])
+            averages.append(calculate_average(info["grades"]))
+
+        fig, ax = plt.subplots()
+        ax.bar(names, averages)
+
+        canvas = FigureCanvasTkAgg(fig, master=self)
+        canvas.draw()
+        canvas.get_tk_widget().pack()
 
     def sort_students(self):
         # sort students (GeeksforGeeks, 2024)
