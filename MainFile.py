@@ -1,6 +1,6 @@
 #student progress tracker  
 # added charts for data visualisation (Matplotlib Development Team, 2024)
-
+# improved UI (Corey Schafer, 2019)
 
 #first import libraries 
 import tkinter as tk  #GUI creation (python software foundation, 2024)
@@ -38,21 +38,22 @@ class App(tk.Tk):
 
         #window  setting
         self.title("Student Progress Tracker")
-        self.geometry("800x600")
+        self.geometry("900x650")
+        self.configure(bg="#242444") #color for the background
 
         self.db = load_data()
 
         #input section
-        frame= tk.Frame(self)
-        frame.pack(pady=20)
+        frame= tk.Frame(self, bg="#2a2a3d")
+        frame.pack(pady=20, padx=20)
 
         #name input
-        tk.Label(frame, text="Name:").grid(row=0, column=0)
+        tk.Label(frame, text="Name:", bg="#464668", fg="white").grid(row=0, column=0)
         self.name_entry = tk.Entry(frame)
         self.name_entry.grid(row=0, column=1)
 
         # grade input
-        tk.Label(frame, text="Grade:").grid(row=1, column=0)
+        tk.Label(frame, text="Grade:", bg="#464668", fg="white").grid(row=1, column=0)
         self.grade_entry = tk.Entry(frame)
         self.grade_entry.grid(row=1, column=1)
 
@@ -60,10 +61,10 @@ class App(tk.Tk):
         tk.Button(self, text="Add Student", command=self.add_student).pack(pady=10)
 
          # search section
-        search_frame = tk.Frame(self)
+        search_frame = tk.Frame(self, bg="#2a2a3d")
         search_frame.pack()
 
-        tk.Label(search_frame, text="Search ID:").pack(side=tk.LEFT)
+        tk.Label(search_frame, text="Search ID:", bg="#464668", fg="white").pack(side=tk.LEFT)
         self.search_entry = tk.Entry(search_frame)
         self.search_entry.pack(side=tk.LEFT)
 
@@ -82,7 +83,7 @@ class App(tk.Tk):
         self.tree.heading("Name", text="Name")
         self.tree.heading("Average", text="Average")
 
-        self.tree.pack(fill=tk.BOTH, expand=True)
+        self.tree.pack(fill=tk.BOTH, expand=True, padx=10, pady=10) #added padding
 
         self.refresh_table()
 
