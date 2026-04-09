@@ -65,6 +65,9 @@ class App(tk.Tk):
 
         tk.Button(search_frame, text="Search", command=self.search_student).pack(side=tk.LEFT)
 
+         # sort button
+        tk.Button(self, text="Sort by Average", command=self.sort_students).pack(pady=5)
+
 
         # table
         self.tree = ttk.Treeview(self, columns=("ID", "Name", "Average"), show="headings")
@@ -76,7 +79,22 @@ class App(tk.Tk):
         self.tree.pack(fill=tk.BOTH, expand=True)
 
         self.refresh_table()
-        
+
+    def sort_students(self):
+        # sort students (GeeksforGeeks, 2024)
+        sorted_data = sorted(
+            self.db.items(),
+            key=lambda x: calculate_average(x[1]["grades"]),
+            reverse=True
+        )
+
+        for row in self.tree.get_children():
+            self.tree.delete(row)
+
+        for sid, info in sorted_data:
+            avg = calculate_average(info["grades"])
+            self.tree.insert("", "end", values=(sid, info["name"], f"{avg:.1f}"))
+
 
     def search_student(self):
         # search in dictionary (GeeksforGeeks, 2024)
