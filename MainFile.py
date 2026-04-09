@@ -177,6 +177,10 @@ class App(tk.Tk):
 
         self.refresh_table()  # update table
 
+        # clear inputs (Programiz, 2024)
+        self.name_entry.delete(0, tk.END)  
+        self.grade_entry.delete(0, tk.END)
+
         messagebox.showinfo("Success", "Student added")
 
 
