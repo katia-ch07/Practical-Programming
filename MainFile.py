@@ -1,6 +1,7 @@
 #student progress tracker  
 # added charts for data visualisation (Matplotlib Development Team, 2024)
 # improved UI (Corey Schafer, 2019)
+# basic app structure inspired by tutorial (Bro Code, 2021)
 
 #first import libraries 
 import tkinter as tk  #GUI creation (python software foundation, 2024)
@@ -16,7 +17,6 @@ DATA_FILE = "students.json"
 def load_data():
     #we have to check if the file exists first (Real python, 2023)
     if os.path.exists(DATA_FILE):
-        with open(DATA_FILE):
             with open(DATA_FILE, "r") as file:
                 return json.load(file)
     return {}
@@ -41,7 +41,7 @@ class App(tk.Tk):
         self.geometry("900x650")
         self.configure(bg="#242444") #color for the background
 
-        self.db = load_data()
+        self.db = load_data()#load data base
 
         #input section
         frame= tk.Frame(self, bg="#2a2a3d")
@@ -57,7 +57,7 @@ class App(tk.Tk):
         self.grade_entry = tk.Entry(frame)
         self.grade_entry.grid(row=1, column=1)
 
-        # add button
+        # add button to add students
         tk.Button(self, text="Add Student", command=self.add_student).pack(pady=10)
 
          # search section
@@ -85,24 +85,28 @@ class App(tk.Tk):
 
         self.tree.pack(fill=tk.BOTH, expand=True, padx=10, pady=10) #added padding
 
-        self.refresh_table()
+        self.refresh_table()#to load table data
 
     def show_chart(self):
         # create simple bar chart (W3Schools, 2024)
         names = []
         averages = []
 
+        #it's loop that goes through students to prepare chart data
         for info in self.db.values():
             names.append(info["name"])
             averages.append(calculate_average(info["grades"]))
 
+        #creating bar chart
         fig, ax = plt.subplots()
         ax.bar(names, averages)
 
+        #dispalying chart in tkinter window
         canvas = FigureCanvasTkAgg(fig, master=self)
         canvas.draw()
         canvas.get_tk_widget().pack()
 
+#sort student by average
     def sort_students(self):
         # sort students (GeeksforGeeks, 2024)
         sorted_data = sorted(
@@ -111,14 +115,14 @@ class App(tk.Tk):
             reverse=True
         )
 
-        for row in self.tree.get_children():
+        for row in self.tree.get_children(): #clear table first
             self.tree.delete(row)
 
-        for sid, info in sorted_data:
+        for sid, info in sorted_data: #insert sorted data
             avg = calculate_average(info["grades"])
             self.tree.insert("", "end", values=(sid, info["name"], f"{avg:.1f}"))
 
-
+         #surch by student ID
     def search_student(self):
         # search in dictionary (GeeksforGeeks, 2024)
         query = self.search_entry.get()
@@ -130,24 +134,24 @@ class App(tk.Tk):
             messagebox.showwarning("Not Found", "Student not found")
 
 
-    def refresh_table(self):
+    def refresh_table(self):#reflesh the table data
         #clear table (Stack Overflow Community, 2023)
-        for row in self.tree.get_children():
+        for row in self.tree.get_children(): #to clear old data
             self.tree.delete(row)
 
-        #insert data
+        #insert updated data
         for sid, info in self.db.items():
             avg = calculate_average(info["grades"])
             self.tree.insert("", "end", values=(sid, info["name"], f"{avg:.1f}"))
 
 
-    def add_student(self):
+    def add_student(self): #to add new student
         #get values from user (freeCodeCamp, 2022)
         name = self.name_entry.get()
         grade = self.grade_entry.get()
 
         #check if name is empty (W3Schools, 2024)
-
+        #validation
         if name == "":
             messagebox.showerror("Error", "Name cannot be empty")
             return
@@ -173,7 +177,7 @@ class App(tk.Tk):
             "grades": [grade]  # list so we can add more later
         }
 
-        save_data(self.db)
+        save_data(self.db)#save to file
 
         self.refresh_table()  # update table
 
