@@ -55,6 +55,17 @@ class App(tk.Tk):
         # add button
         tk.Button(self, text="Add Student", command=self.add_student).pack(pady=10)
 
+         # search section
+        search_frame = tk.Frame(self)
+        search_frame.pack()
+
+        tk.Label(search_frame, text="Search ID:").pack(side=tk.LEFT)
+        self.search_entry = tk.Entry(search_frame)
+        self.search_entry.pack(side=tk.LEFT)
+
+        tk.Button(search_frame, text="Search", command=self.search_student).pack(side=tk.LEFT)
+
+
         # table
         self.tree = ttk.Treeview(self, columns=("ID", "Name", "Average"), show="headings")
 
@@ -65,6 +76,18 @@ class App(tk.Tk):
         self.tree.pack(fill=tk.BOTH, expand=True)
 
         self.refresh_table()
+        
+
+    def search_student(self):
+        # search in dictionary (GeeksforGeeks, 2024)
+        query = self.search_entry.get()
+
+        if query in self.db:
+            student = self.db[query]
+            messagebox.showinfo("Found", f"{student['name']}")
+        else:
+            messagebox.showwarning("Not Found", "Student not found")
+
 
     def refresh_table(self):
         #clear table (Stack Overflow Community, 2023)
