@@ -1,0 +1,26 @@
+{
+    "S1": {
+        "name": "jonh",
+        "grades": [
+            35.0
+        ]
+    },
+    "S2": {
+        "name": "carl",
+        "grades": [
+            67.0
+        ]
+    },
+    "S3": {
+        "name": "Alex",
+        "grades": [
+            57.0
+        ]
+    },
+    "S4": {
+        "name": "maria",
+        "grades": [
+            58.7
+        ]
+    }
+}
